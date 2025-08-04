@@ -2,14 +2,20 @@ package com.cafe_kiosk.kiosk_admin.service;
 
 import com.cafe_kiosk.kiosk_admin.annotation.AdminLoggable;
 import com.cafe_kiosk.kiosk_admin.domain.OrderStatus;
+import com.cafe_kiosk.kiosk_admin.dto.MenuOption;
+import com.cafe_kiosk.kiosk_admin.dto.category.MenuOptionDTO;
+import com.cafe_kiosk.kiosk_admin.dto.order.OrderItem;
 import com.cafe_kiosk.kiosk_admin.dto.order.Orders;
+import com.cafe_kiosk.kiosk_admin.mapper.AdminOptionMapper;
 import com.cafe_kiosk.kiosk_admin.mapper.AdminOrderMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -17,6 +23,7 @@ import java.util.List;
 public class AdminOrderService {
 
     private final AdminOrderMapper adminOrderMapper;
+    private final AdminOptionMapper adminOptionMapper;
 
     @AdminLoggable(actionType = "UPDATE", targetTable = "orders", description = "주문 취소 처리")
     // 주문 취소 처리 (포인트 원복 + 포인트 이력 삭제)
@@ -46,8 +53,29 @@ public class AdminOrderService {
         }
     }
     public List<Orders> findOrdersByStatus(OrderStatus status) {
-        return adminOrderMapper.selectOrdersWithItemsByStatus(status.name());
+        List<Orders> ordersList = adminOrderMapper.selectOrdersWithItemsByStatus(status.name());
+
+        for (Orders order : ordersList) {
+            for (OrderItem item : order.getOrderItemList()) {
+                if (item.getOptions() != null && !item.getOptions().isEmpty()) {
+                    // options 문자열 분리 후 Integer 리스트 변환
+                    List<Integer> optionIds = Arrays.stream(item.getOptions().split(";"))
+                            .map(String::trim)
+                            .map(Integer::parseInt)
+                            .toList();
+
+                    // DB에서 옵션 리스트 조회 (MenuOptionMapper에 구현 필요)
+                    List<MenuOptionDTO> optionsFromDB = adminOptionMapper.selectMenuOptionsByIds(optionIds);
+
+                    // 실제 옵션 리스트 세팅
+                    item.setOptionList(optionsFromDB);
+                }
+            }
+        }
+
+        return ordersList;
     }
+
 
     @AdminLoggable(actionType = "UPDATE", targetTable = "orders", description = "주문 상태 변경")
     @Transactional

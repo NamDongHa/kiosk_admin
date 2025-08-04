@@ -17,6 +17,7 @@
             <id property="orderItemId" column="order_item_id"/>
             <result property="quantity" column="quantity"/>
             <result property="price" column="price"/>
+            <result property="options" column="options"/>
 
             <association property="menuDTO" javaType="com.cafe_kiosk.kiosk_admin.dto.MenuDTO">
                 <id property="menuId" column="menu_id"/>
@@ -32,30 +33,28 @@
     </resultMap>
 
     <!-- 주문 목록 전체 조회 -->
+    <!-- order_item 컬럼에 options 추가 -->
     <select id="selectOrdersWithItemsByStatus" resultMap="OrderWithItemsResultMap" parameterType="string">
         SELECT
-            o.order_id,
-            o.phone,
-            o.order_time,
-            o.total_amount,
-            o.status,
-            o.used_point,
-            o.earned_point,
-            o.order_method,
+        o.order_id,
+        o.phone,
+        o.order_time,
+        o.total_amount,
+        o.status,
+        o.used_point,
+        o.earned_point,
+        o.order_method,
 
-            oi.order_item_id,
-            oi.quantity,
-            oi.price,
+        oi.order_item_id,
+        oi.quantity,
+        oi.price,
+        oi.options,
 
-            m.menu_id,
-            m.name AS menu_name,
-            mo.option_id,
-            mo.option_name,
-            mo.option_price
+        m.menu_id,
+        m.name AS menu_name
         FROM orders o
-                 LEFT JOIN order_item oi ON o.order_id = oi.order_id
-                 LEFT JOIN menu m ON oi.menu_id = m.menu_id
-                 LEFT JOIN menu_option mo ON oi.option_id = mo.option_id
+        LEFT JOIN order_item oi ON o.order_id = oi.order_id
+        LEFT JOIN menu m ON oi.menu_id = m.menu_id
         WHERE o.status = #{status}
         ORDER BY o.order_time DESC
     </select>
@@ -118,4 +117,5 @@
         SET status = #{status}
         WHERE order_id = #{orderId}
     </update>
+
 </mapper>

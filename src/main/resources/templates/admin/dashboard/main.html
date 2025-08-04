@@ -214,7 +214,12 @@
                             <tbody>
                             <tr th:each="item : ${order.orderItemList}">
                                 <td th:text="${item.menuDTO.name}">아메리카노</td>
-                                <td th:text="${item.option != null ? item.option.optionName : '없음'}">Large</td>
+                                <td>
+  <span th:each="opt : ${item.optionList}">
+    <span th:text="|${opt.optionName} (+${#numbers.formatInteger(opt.optionPrice, 3, 'COMMA')}원)|"></span><br/>
+  </span>
+                                </td>
+
                                 <td th:text="${item.quantity}">2</td>
                                 <td th:text="|${#numbers.formatInteger(item.price, 3, 'COMMA')}원|">5,000원</td>
                             </tr>

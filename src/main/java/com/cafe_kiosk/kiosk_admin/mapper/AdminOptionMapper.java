@@ -16,4 +16,5 @@ public interface AdminOptionMapper {
     void insertOption(MenuOptionDTO option);
     void updateIsDeleted(@Param("optionId") int optionId, @Param("isDeleted") boolean isDeleted);
     List<MenuOptionDTO> selectOptionsWithCategoryName(Integer categoryId);
+    List<MenuOptionDTO> selectMenuOptionsByIds(@Param("optionIds") List<Integer> optionIds);
 }
