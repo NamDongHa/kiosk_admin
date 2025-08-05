@@ -59,16 +59,14 @@ public class AdminOrderService {
             for (OrderItem item : order.getOrderItemList()) {
                 if (item.getOptions() != null && !item.getOptions().isEmpty()) {
                     // options 문자열 분리 후 Integer 리스트 변환
-                    List<Integer> optionIds = Arrays.stream(item.getOptions().split(";"))
+                    List<Integer> optionIds = Arrays.stream(item.getOptions().split(","))
                             .map(String::trim)
                             .map(Integer::parseInt)
                             .toList();
 
-                    // DB에서 옵션 리스트 조회 (MenuOptionMapper에 구현 필요)
-                    List<MenuOptionDTO> optionsFromDB = adminOptionMapper.selectMenuOptionsByIds(optionIds);
+                    List<MenuOptionDTO> options = adminOptionMapper.selectMenuOptionsByIds(optionIds);
 
-                    // 실제 옵션 리스트 세팅
-                    item.setOptionList(optionsFromDB);
+                    item.setOptionList(options);
                 }
             }
         }
