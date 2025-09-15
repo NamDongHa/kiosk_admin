@@ -64,6 +64,7 @@ BEANS COFFEE KIOSK의 **관리자(Admin) 시스템**은 매장 운영을 위한 
 ---
 
 ## 📂 프로젝트 구조
+```plaintext
 kiosk_admin/
 ├── controller/    # 요청 처리 및 화면 연결 (Spring MVC)
 ├── service/       # 비즈니스 로직 처리
