@@ -63,16 +63,7 @@ BEANS COFFEE KIOSK의 **관리자(Admin) 시스템**은 매장 운영을 위한 
 
 ---
 
-## 📂 프로젝트 구조
-kiosk_admin/
-  ├── controller/    # 요청 처리 및 화면 연결 (Spring MVC)
-  ├── service/       # 비즈니스 로직 처리
-  ├── mapper/        # MyBatis SQL 매핑 인터페이스
-  ├── xml/           # SQL 쿼리 정의 XML 파일
-  ├── model/         # DTO 및 VO 클래스
-  ├── templates/     # Thymeleaf 템플릿 (HTML)
-  ├── static/        # CSS, JS, 이미지 등 정적 파일
-  └── application.yml # 환경 설정
+<pre> ```txt ## 📂 프로젝트 구조 kiosk_admin/ ├── controller/ # 요청 처리 및 화면 연결 (Spring MVC) ├── service/ # 비즈니스 로직 처리 ├── mapper/ # MyBatis SQL 매핑 인터페이스 ├── xml/ # SQL 쿼리 정의 XML 파일 ├── model/ # DTO 및 VO 클래스 ├── templates/ # Thymeleaf 템플릿 (HTML) ├── static/ # CSS, JS, 이미지 등 정적 파일 └── application.yml # 환경 설정 ``` </pre>
 
 ---
 
