@@ -74,7 +74,7 @@ kiosk_admin/
 ├── templates/     # Thymeleaf 템플릿 (HTML)
 ├── static/        # CSS, JS, 이미지 등 정적 파일
 └── application.yml # 환경 설정
-
+```
 ---
 
 ## 💭 회고
